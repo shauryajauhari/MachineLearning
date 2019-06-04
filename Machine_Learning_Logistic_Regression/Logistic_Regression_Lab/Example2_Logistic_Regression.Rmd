@@ -1,0 +1,66 @@
+---
+title: "Example2_LogisticRegression"
+author: 'Shaurya Jauhari (Email: shauryajauhari@gzhmu.edu.cn)'
+date: '`r paste(Sys.Date())`'
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("DescTools", dependencies = TRUE, repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
+library(DescTools)
+```
+
+```{r}
+#Import
+# *file.choose()* function can be used to manually browse for desired files.
+data <- read.csv(file = "/Users/mei/Desktop/Machine-Learning_Lab_Workshops/Machine_Learning_Logistic_Regression/Logistic_Regression_Lab/TCGA-PANCAN-HiSeq-801x20531/data.csv", sep = ",", header = TRUE)
+labels <- read.csv(file = "/Users/mei/Desktop/Machine-Learning_Lab_Workshops/Machine_Learning_Logistic_Regression/Logistic_Regression_Lab/TCGA-PANCAN-HiSeq-801x20531/labels.csv", sep = ",", header = TRUE)
+
+# Shorten dimension of the data frame
+data <- data[,2:11]
+labels <- labels[,-1]
+
+# Removing columns with majority null entries.
+data <- data[, -c(1,6,9,10)]
+
+# Assign new column for class labels
+data$Class <- labels
+
+# Consider only data with two labels for logistic regression
+# Extracting just two labels BRCA and PRAD out of 5.
+data <- data[data$Class == c("BRCA", "PRAD"),]
+data$Class <- factor(data$Class, levels = c("BRCA", "PRAD"))
+
+#stats::glm
+
+model1 <- glm(formula = as.factor(data$Class) ~ ., 
+              data = data, 
+              family = "binomial")
+summary(model1)
+
+# Multicollinearity check
+VIF(model1)
+
+#Prediction
+y_estimate <- predict(model1, 
+                      data, 
+                      type = "response")
+
+# Converting probabilities to labels
+prediction_probabilities <- ifelse(y_estimate>0.5, "BRCA", "PRAD")
+
+# Confusion matrix
+confusion_matrix<- table(Predicted = prediction_probabilities, Actual = data$Class)
+print(confusion_matrix)
+
+#Misclassification error
+misclassfication_error <- 1- sum(diag(confusion_matrix))/sum(confusion_matrix) 
+cat("The misclassification error in test data is",
+    (round(misclassfication_error*100)), "percent")
+```
+
