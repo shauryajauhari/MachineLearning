@@ -37,6 +37,6 @@ Decision Trees
 - Measures of Purity: **Entropy** and **Information Gain**
 - $Information Gain = Entropy_{Old} - Entropy_{New}$ 
 
-Entropy
+Central Dogma of Random Forests
 ========================================================
-- 
+![Central Dogma of Random Forests](./Central_Dogma_of_Random_Forests.jpg)

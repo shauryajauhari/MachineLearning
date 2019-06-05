@@ -1,7 +1,7 @@
 Decision Trees and Random Forests: A Machine Learning Perspective
 ========================================================
 author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-05-31
+date: 2019-06-05
 autosize: true
 
 RoadMap
@@ -37,6 +37,6 @@ Decision Trees
 - Measures of Purity: **Entropy** and **Information Gain**
 - $Information Gain = Entropy_{Old} - Entropy_{New}$ 
 
-Entropy
+Central Dogma of Random Forests
 ========================================================
-- 
+![Central Dogma of Random Forests](./Central_Dogma_of_Random_Forests.jpg)
