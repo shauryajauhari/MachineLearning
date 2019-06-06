@@ -34,7 +34,7 @@ library(party)
 
 ```
 
-
+P.S. During intermediary partitioning, if the node has the lowest Gini Index, it becomes leaf node. That will most likely be the case when all remaining non-root nodes have been exhausted, checking for impurity score.
 
 All workshop study material is available at my github page [@mygithub].
 
