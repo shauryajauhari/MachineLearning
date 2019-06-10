@@ -3,9 +3,9 @@ title: "Decision Trees and Random Forests"
 author: 'Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)'
 date: "`r paste(Sys.Date())`"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 link-citations: yes
 bibliography: citations.bib
 ---
@@ -33,6 +33,10 @@ install.packages("party", dependencies = TRUE, repos = "https://mirrors.tuna.tsi
 library(party)
 
 ```
+
+**Note:**
+1.  The authors (@Rajagopal2013) construed p300 (Transcription co-activator) binding sites overlapping DNase-I hypersentitive sites and distal to annotated transcription start sites (TSS) as active p300 binding sites representative of enhancers.
+2. Clusters with presence or absence of H3K36me3 were hypothesized to represent genic and inter-genic enhancers respectively.
 
 P.S. During intermediary partitioning, if the node has the lowest Gini Index, it becomes leaf node. That will most likely be the case when all remaining non-root nodes have been exhausted, checking for impurity score.
 
