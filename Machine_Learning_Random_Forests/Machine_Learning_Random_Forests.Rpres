@@ -123,7 +123,7 @@ Take it easy!
   - *rpart* , rpart(y~x+z, data=df, parms=list(split='gini'))
 
   
-Central Dogma of Random Forests
+Central Dogma of Random Forests: "Variety" brings "Veracity"
 ========================================================
 ![Central Dogma of Random Forests](./Central_Dogma_of_Random_Forests.jpg)
 

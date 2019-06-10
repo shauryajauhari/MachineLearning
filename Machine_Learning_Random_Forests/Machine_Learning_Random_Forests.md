@@ -2,7 +2,7 @@
 Decision Trees and Random Forests: A Machine Learning Perspective
 ========================================================
 author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-06-06
+date: 2019-06-10
 autosize: true
 
 RoadMap
@@ -123,7 +123,7 @@ Take it easy!
   - *rpart* , rpart(y~x+z, data=df, parms=list(split='gini'))
 
   
-Central Dogma of Random Forests
+Central Dogma of Random Forests: "Variety" brings "Veracity"
 ========================================================
 ![Central Dogma of Random Forests](./Central_Dogma_of_Random_Forests.jpg)
 
