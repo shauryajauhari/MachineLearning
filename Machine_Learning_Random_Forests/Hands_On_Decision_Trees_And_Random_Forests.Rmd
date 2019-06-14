@@ -39,6 +39,7 @@ Certain known classes of proteins/ cis-regulatory elements called Transcription 
 
 ```{r Dataset Processing, eval=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=80)}
 mydata_enhancers <- read.csv("./GSM2445787.bed", sep = '\t', header = FALSE)
+mydata_nonenhancers <- read.csv("./GSM817160.bed", sep = '\t', header = FALSE)
 
 ## We choose to incorporate only those peaks with occurence of 1 and above. Additionally, a column for "Class" has been added that uniformly holds the value "Enhancer" as all the peaks correspond to p300 bindings in the genome. Finally, we have also pruned the dataset for columns on peak ids and frequencies.
 
@@ -56,19 +57,40 @@ mydata_enhancers_sorted_chrom_names <- mydata_enhancers[with(mydata_enhancers, o
 rm(mydata_enhancers)
 ## Cool!
 
-cumulative_range <- function(x){
-  for (i in 1:length(x))
-  {
-    
-  }
-}
+## So, the idea here is that we shall have regions in chromosome 1 indexed as is, and then we shall engage the end index of chromosome 1 as the starting index of chromosome 2; same for chromosome 3 of chromosome 2 ans so forth. In order to accomplish that, let us break down the given dataset for each chromosome.
 
+chr1_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr1", ]
+chr2_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr2", ]
+chr3_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr3", ]
+chr4_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr4", ]
+chr5_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr5", ]
+chr6_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr6", ]
+chr7_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr7", ]
+chr8_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr8", ]
+chr9_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr9", ]
+chr10_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr10", ]
+chr11_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr11", ]
+chr12_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr12", ]
+chr13_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr13", ]
+chr14_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr14", ]
+chr15_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr15", ]
+chr16_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr16", ]
+chr17_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr17", ]
+chr18_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr18", ]
+chr19_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr19", ]
+chr20_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr20", ]
+chr21_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr21", ]
+chr22_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chr22", ]
+chrM_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chrM", ]
+chrX_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chrX", ]
+chrY_data<- mydata_enhancers_sorted_chrom_names[mydata_enhancers_sorted_chrom_names$Chrom == "chrY", ]
+ 
 ```
   
 
 ![Enhancer Prediction Basis](./WorkFlow_Illustration.jpg)
 
-To add to the negative class data, we consider regions that are non-enhancers. Under this category, we include some random background data as well as equal number of TSS. The reason for soing such is because enhancer sites are lower in number in comparison to the promoter sites [@Rajagopal2013]. So, in order to normalize our example dataset we plan such a structuring.
+To add to the negative class data, we consider regions that are non-enhancers. Under this category, we include some random background data as well as equal number of TSS. The reason for doing this is because enhancer sites are lower in number in comparison to the promoter sites [@Rajagopal2013]. So, in order to normalize our example dataset we plan such a structuring.
 
 
 
