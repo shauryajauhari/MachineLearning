@@ -2,7 +2,7 @@
 Decision Trees and Random Forests: A Machine Learning Perspective
 ========================================================
 author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-06-10
+date: 2019-06-14
 autosize: true
 
 RoadMap
@@ -59,7 +59,7 @@ Gini Index (Contd ...)
 - Compare impurities
   - less the better
 - $$Gini Impurity_{Sunny}$$ = 1 - (the probability of "yes")^2 - (the probability of "no")^2
-  - $1 - (2/2+3)^2 - (3/2+3)^2$
+  - $1 - (2/(2+3))^2 - (3/(2+3))^2$
   - **0.52**
 - Calculate the same for *Rain* and *Overcast*
 
@@ -176,3 +176,10 @@ Random Forests: Missing Data (Contd...)
 </p>
 - Proximity Matrix -> Distance Matrix -> Heatmap -> MDS Plot
 - (TP,TN,FP,FN) -> Confusion Matrix -> Accuracy -> ROC Curve
+
+
+Thank You
+========================================================
+
+- Off to the exercises now.
+- https://github.com/shauryajauhari/Machine_Learning/

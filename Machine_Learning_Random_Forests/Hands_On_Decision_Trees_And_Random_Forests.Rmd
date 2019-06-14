@@ -3,14 +3,14 @@ title: "Decision Trees and Random Forests"
 author: 'Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)'
 date: "`r paste(Sys.Date())`"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 link-citations: yes
 bibliography: citations.bib
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, eval=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=80)}
 knitr::opts_chunk$set(echo = TRUE, comment = NA)
 ```
 ***
@@ -24,7 +24,7 @@ Random forests enlighten on the dogma of democracy, i.e. *majority wins*. Decisi
 In this module, we shall delve into creation of basic decision trees to have an understanding of it. For the purpose, we shall load the package **party** and make use of the function **ctree()** to calculate and analyze decision trees.  
 
 
-```{r Loading *party* package}
+```{r Loading package, eval=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=80)}
 install.packages("party", dependencies = TRUE, repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
 library(party)
 
@@ -37,7 +37,7 @@ Certain known classes of proteins/ cis-regulatory elements called Transcription 
 
   For use in this session, we have chosen the dataset from the study, "Genome-wide mapping of p300 binding in resting and activated human naïve and memory CD8 T cells", sample dataset deposited to GEO labeled GSM2445787. The dataset is originally available as a WIG file. At first, it is converted to BED and is then subsequently cleaned for our use as illustrated in the following code^[See Notes, 3].
 
-```{r Dataset Processing}
+```{r Dataset Processing, eval=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=80)}
 mydata_enhancers <- read.csv("./GSM2445787.bed", sep = '\t', header = FALSE)
 
 ## We choose to incorporate only those peaks with occurence of 1 and above. Additionally, a column for "Class" has been added that uniformly holds the value "Enhancer" as all the peaks correspond to p300 bindings in the genome. Finally, we have also pruned the dataset for columns on peak ids and frequencies.
@@ -53,13 +53,21 @@ colnames(mydata_enhancers) <- c("Chrom", "Start", "End", "Class")
 ## It's better to confirm if we have the data in sorted order by chromosomes.
 
 mydata_enhancers_sorted_chrom_names <- mydata_enhancers[with(mydata_enhancers, order(Chrom)), ]
-
+rm(mydata_enhancers)
 ## Cool!
 
-```
+cumulative_range <- function(x){
+  for (i in 1:length(x))
+  {
+    
+  }
+}
 
+```
+  
 
 ![Enhancer Prediction Basis](./WorkFlow_Illustration.jpg)
+
 To add to the negative class data, we consider regions that are non-enhancers. Under this category, we include some random background data as well as equal number of TSS. The reason for soing such is because enhancer sites are lower in number in comparison to the promoter sites [@Rajagopal2013]. So, in order to normalize our example dataset we plan such a structuring.
 
 
