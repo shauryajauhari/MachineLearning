@@ -2,7 +2,7 @@
 Decision Trees and Random Forests: A Machine Learning Perspective
 ========================================================
 author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-06-14
+date: 2019-06-19
 autosize: true
 
 RoadMap
@@ -177,6 +177,18 @@ Random Forests: Missing Data (Contd...)
 - Proximity Matrix -> Distance Matrix -> Heatmap -> MDS Plot
 - (TP,TN,FP,FN) -> Confusion Matrix -> Accuracy -> ROC Curve
 
+
+R Packages
+========================================================
+**party**  
+> ctree(formula, data, controls = ctree_control())  
+
+**rpart**  
+> t <- rpart(formula,data)
+> rpart.plot(t, *extra*)  
+
+**randomForest**  
+> randomForest(formula, data, *ntree*, *mtry*)
 
 Thank You
 ========================================================
