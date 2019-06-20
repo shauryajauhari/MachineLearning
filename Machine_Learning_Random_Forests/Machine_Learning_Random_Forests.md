@@ -2,7 +2,7 @@
 Decision Trees and Random Forests: A Machine Learning Perspective
 ========================================================
 author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-06-19
+date: 2019-06-20
 autosize: true
 
 RoadMap
