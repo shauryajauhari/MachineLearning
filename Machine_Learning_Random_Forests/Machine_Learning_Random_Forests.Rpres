@@ -2,7 +2,7 @@
 Decision Trees and Random Forests: A Machine Learning Perspective
 ========================================================
 author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
-date: `r paste(Sys.Date())`
+date: `r paste(Sys.time())`
 autosize: true
 
 RoadMap
@@ -27,8 +27,8 @@ Decision Trees
 - **Cleave data** into smaller portions to elicit patterns that aid prediction | Recursive Partitioning
 - **Logical structures** hence represented can be construed without any *a-priori knowledge*.
 <p float="left">
-<img src="./Decision_Tree_Example.jpg" width="900" />
-<img src="./Decision_Tree_Example_Table.png" width="900" />
+<img src="./Decision_Tree_Example.jpg" width="700" />
+<img src="./Decision_Tree_Example_Table.png" width="700" />
 </p>
 
 
@@ -125,8 +125,10 @@ Take it easy!
   
 Central Dogma of Random Forests: "Variety" brings "Veracity"
 ========================================================
-![Central Dogma of Random Forests](./Central_Dogma_of_Random_Forests.jpg)
 
+<p float="center">
+<img src="./Central_Dogma_of_Random_Forests.jpg" width="1500" />
+</p>
 
 Random Forests: Accuracy
 ========================================================
@@ -189,6 +191,17 @@ R Packages
 
 **randomForest**  
 > randomForest(formula, data, *ntree*, *mtry*)
+
+
+Disclaimer
+========================================================
+- Last excercise on logistic regression has been updated with the current dataset.
+- Data isn't all that good!
+
+<p float="center">
+<img src="./Related_Paper.png" width="500" />
+<img src="./Distribution_Histone_Marks_TSS.png" width="600" />
+</p>
 
 Thank You
 ========================================================
