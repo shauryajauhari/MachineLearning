@@ -1,0 +1,8 @@
+/* 
+  The following code should go inside of 'custom.css'.
+  The file should be in: ~/.jupyter/custom/custom.css. 
+  If it doesn't exist, create it.
+*/
+
+@import url("jupyter-navbar/navbar.css");
+
