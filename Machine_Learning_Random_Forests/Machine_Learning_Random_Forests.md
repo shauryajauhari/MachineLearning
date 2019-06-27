@@ -2,7 +2,7 @@
 Decision Trees and Random Forests: A Machine Learning Perspective
 ========================================================
 author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-06-27 08:47:55
+date: 2019-06-27 08:55:59
 autosize: true
 
 RoadMap
@@ -196,7 +196,7 @@ R Packages
 Disclaimer
 ========================================================
 - Last excercise on logistic regression has been updated with the current dataset.
-- Data isn't all that good!
+- Data isn't all that good! (https://github.com/mdozmorov/genomerunner_web/wiki/Histone-marks)
 
 <p float="center">
 <img src="./Related_Paper.png" width="500" />
