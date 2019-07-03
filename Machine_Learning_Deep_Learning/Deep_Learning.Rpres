@@ -1,0 +1,12 @@
+Deep Learning
+========================================================
+author: Shaurya Jauhari, Mora Lab, GMU. (Email: shauryajauhari@gzhmu.edu.cn)
+date: `r paste(Sys.time())`
+autosize: true
+
+RoadMap
+========================================================
+
+- Neural Networks
+  - Introduction
+  - 
