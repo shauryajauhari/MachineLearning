@@ -1,6 +1,6 @@
 ## Installing packages and loading libraries.
 
-install.packages("keras", type = "source", repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
+install.packages("keras", repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
 library(keras)
 
 ## The following function helps to setup the "TensorFlow" work environment and 
