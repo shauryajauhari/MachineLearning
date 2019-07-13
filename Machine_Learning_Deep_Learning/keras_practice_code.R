@@ -1,6 +1,8 @@
 ## Installing packages and loading libraries.
 setwd("C:/Users/rajni/Desktop/Machine_Learning/Machine_Learning_Deep_Learning")
-install.packages("keras", repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
+install.packages("keras", 
+                 repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/",
+                 dependencies = TRUE)
 library(keras)
 
 ## The following function helps to setup the "TensorFlow" work environment and 
