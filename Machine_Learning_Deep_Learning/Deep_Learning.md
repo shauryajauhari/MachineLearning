@@ -2,7 +2,7 @@
 Neural Networks and Deep Learning
 ========================================================
 author: Shaurya Jauhari, Mora Lab, Guangzhou Medical University. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-07-26 12:42:51
+date: 2019-07-26 13:23:19
 autosize: true
 
 Neural Networks
@@ -33,7 +33,8 @@ Deep Learning (Contd.)
 Deep Learning : Essential Characteristics
 ========================================================
 
-- Self learning and feature extraction  
+- Hierarchical Learning
+    - Self evolution and feature extraction  
 - Predominantly employed for **multimedia mining**  
 - **Deep Learning** is a kind of **machine learning** that focuses on **neural networks**.
 
