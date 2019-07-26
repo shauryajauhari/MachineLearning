@@ -48,6 +48,13 @@ head(my_consolidated_dataset)
 table(my_consolidated_dataset$Class)
 
 ## Introducing new columns representing enhancer classes as p300 elements and H3K27ac sites as non-enhancers. 
-my_consolidated_dataset$p300 <- ifelse(my_consolidated_dataset$Class =="Enhancer", "Yes", "No")
-my_consolidated_dataset$H3K27ac <- ifelse(my_consolidated_dataset$Class =="Non-Enhancer", "Yes", "No")
+my_consolidated_dataset$p300 <- as.factor(ifelse(my_consolidated_dataset$Class =="Enhancer", "Yes", "No"))
+my_consolidated_dataset$H3K27ac <- as.factor(ifelse(my_consolidated_dataset$Class =="Non-Enhancer", "Yes", "No"))
 
+
+## Since neural networks work on continuous/ integer data, we must convert factor variables to numeric.
+my_consolidated_dataset$p300 <- as.integer(my_consolidated_dataset$p300)
+my_consolidated_dataset$H3K27ac <- as.numeric(my_consolidated_dataset$H3K27ac)
+
+## Creating a surrogate feature/ variable for chrom, start, and end features.
+my_consolidated_dataset$Bin <- as.character(1:nrow(my_consolidated_dataset))
