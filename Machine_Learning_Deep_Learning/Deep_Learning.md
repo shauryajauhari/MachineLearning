@@ -2,7 +2,7 @@
 Neural Networks and Deep Learning
 ========================================================
 author: Shaurya Jauhari, Mora Lab, Guangzhou Medical University. (Email: shauryajauhari@gzhmu.edu.cn)
-date: 2019-07-26 13:23:19
+date: 2019-08-24 13:11:20
 autosize: true
 
 Neural Networks
