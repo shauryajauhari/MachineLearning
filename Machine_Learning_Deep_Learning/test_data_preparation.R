@@ -35,3 +35,13 @@ test$peaks_h3k4me3 <- as.double(as.character(test$peaks_h3k4me3))
 test$peaks_h3k4me2 <- as.double(as.character(test$peaks_h3k4me2))
 test$peaks_h3k4me1 <- as.double(as.character(test$peaks_h3k4me1))
 test$peaks_h3k27ac <- as.double(as.character(test$peaks_h3k27ac))
+
+## For fair results, let's make sure that no "NA" values exist.
+na.omit(test)
+
+## Min-Max normalization
+
+test$peaks_h3k4me3 <- (test$peaks_h3k4me3-min(test$peaks_h3k4me3, na.rm = T))/(max(test$peaks_h3k4me3, na.rm = T)-min(test$peaks_h3k4me3, na.rm = T))
+test$peaks_h3k4me2 <- (test$peaks_h3k4me2-min(test$peaks_h3k4me2, na.rm = T))/(max(test$peaks_h3k4me2, na.rm = T)-min(test$peaks_h3k4me2, na.rm = T))
+test$peaks_h3k4me1 <- (test$peaks_h3k4me1-min(test$peaks_h3k4me1, na.rm = T))/(max(test$peaks_h3k4me1, na.rm = T)-min(test$peaks_h3k4me1, na.rm = T))
+test$peaks_h3k27ac <- (test$peaks_h3k27ac-min(test$peaks_h3k27ac, na.rm = T))/(max(test$peaks_h3k27ac, na.rm = T)-min(test$peaks_h3k27ac, na.rm = T))
