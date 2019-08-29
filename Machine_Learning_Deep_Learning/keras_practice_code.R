@@ -10,3 +10,72 @@ library(keras)
 ## subjective and may vary from system to system.
 
 install_keras()
+
+d <- iris
+d[,5] <- as.numeric(levels(factor(as.numeric(d[,5]))))-1
+
+# Turn `iris` into a matrix
+d <- as.matrix(d)
+
+# Set iris `dimnames` to `NULL`
+dimnames(d) <- NULL
+str(d)
+
+## Data manipulation
+
+
+d3 <- as.matrix(d)
+dimnames(d3) <- NULL
+str(d3)
+
+
+# Normalize, function is a part of keras package
+d3[,1:4] <- normalize(d3[,1:4]) # normalize the features #
+d3[,5] <- as.numeric(d3[,5]) # the class variable must be numeric, use of which will be known in a while #
+
+
+
+# Data Partitioning
+
+set.seed(1234)
+ind <- sample(2, nrow(d3),replace=T, prob=c(0.7,0.3))
+training <- d3[ind==1,1:4] %>% as.matrix()
+trainlabels <- d3[ind==1,5] %>% as.matrix()
+testing <- d3[ind==2,1:4] %>% as.matrix()
+testlabels <- d3[ind==2,5] %>% as.matrix()
+
+# One hot encoding
+
+traininglabels <- to_categorical(trainlabels)
+testinglabels <- to_categorical(testlabels)
+print(testinglabels)
+
+# Create sequential model
+dlmodel <- keras_model_sequential()
+
+dlmodel %>% layer_dense(units=8,
+                        activation='relu',
+                        input_shape=c(4)) %>% 
+            layer_dense (units=3,
+                        activation='softmax')
+summary(dlmodel)
+
+# Model compilation
+
+dlmodel %>% compile (loss='categorical_crossentropy',
+                     optimizer='adam',
+                     metrics='accuracy')
+
+# Fitting the model
+
+# Store the fitting history in `history` 
+history <- dlmodel %>% fit(
+  training, 
+  traininglabels, 
+  epochs = 200,
+  batch_size = 5, 
+  validation_split = 0.2
+)
+
+# Plot the history
+plot(history)

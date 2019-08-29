@@ -17,7 +17,10 @@ merged_bw <- read.csv("./data/H1_Cell_Line/bedtools_Merge.bw", sep = '\t', heade
 merged_bw <- merged_bw[-1,]
 colnames(merged_bw) <- c("chrom", "start", "end", "peaks_h3k4me3", "peaks_h3k4me2", "peaks_h3k4me1", "peaks_h3k27ac")
 head(merged_bw)
-merged_bw$class <- "enhancer"
+
+## Assigning class labels
+labs <- c("Enhancer","Non-Enhancer")
+merged_bw$class <- sample(labs,nrow(merged_bw),replace = TRUE)
 head(merged_bw)
 
 
@@ -45,3 +48,20 @@ test$peaks_h3k4me3 <- (test$peaks_h3k4me3-min(test$peaks_h3k4me3, na.rm = T))/(m
 test$peaks_h3k4me2 <- (test$peaks_h3k4me2-min(test$peaks_h3k4me2, na.rm = T))/(max(test$peaks_h3k4me2, na.rm = T)-min(test$peaks_h3k4me2, na.rm = T))
 test$peaks_h3k4me1 <- (test$peaks_h3k4me1-min(test$peaks_h3k4me1, na.rm = T))/(max(test$peaks_h3k4me1, na.rm = T)-min(test$peaks_h3k4me1, na.rm = T))
 test$peaks_h3k27ac <- (test$peaks_h3k27ac-min(test$peaks_h3k27ac, na.rm = T))/(max(test$peaks_h3k27ac, na.rm = T)-min(test$peaks_h3k27ac, na.rm = T))
+
+# Data Partition
+set.seed(108)
+ind <- sample(2, nrow(test), replace = TRUE, prob = c(0.8, 0.2))
+training <- test[ind==1,]
+testing <- test[ind==2,]
+
+
+# Neural Networks
+set.seed(007)
+nn <- neuralnet(class~peaks_h3k4me3+peaks_h3k4me2+peaks_h3k4me1+peaks_h3k27ac,
+                data = training,
+                hidden = 5,
+                err.fct = "sse",
+                act.fct = "logistic",
+                linear.output = FALSE)
+plot(nn)
