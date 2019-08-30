@@ -1,0 +1,10 @@
+R presentation:
+
+rpubs.com/shauryajauhari/deep_learning
+
+
+
+Jupyter Notebook:
+
+
+https://nbviewer.jupyter.org/github/shauryajauhari/Machine_Learning/blob/master/Machine_Learning_Deep_Learning/hands_on_deep_learning_iris.ipynb
