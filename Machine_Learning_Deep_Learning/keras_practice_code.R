@@ -39,10 +39,10 @@ d3[,5] <- as.numeric(d3[,5]) # the class variable must be numeric, use of which 
 
 set.seed(1234)
 ind <- sample(2, nrow(d3),replace=T, prob=c(0.7,0.3))
-training <- d3[ind==1,1:4] %>% as.matrix()
-trainlabels <- d3[ind==1,5] %>% as.matrix()
-testing <- d3[ind==2,1:4] %>% as.matrix()
-testlabels <- d3[ind==2,5] %>% as.matrix()
+training <- d3[ind==1,1:4] 
+trainlabels <- d3[ind==1,5] 
+testing <- d3[ind==2,1:4] 
+testlabels <- d3[ind==2,5]
 
 # One hot encoding
 
@@ -68,13 +68,13 @@ dlmodel %>% compile (loss='categorical_crossentropy',
 
 # Fitting the model with training data
 
-dlmodelfit <- dlmodel %>% fit (training, 
+dlmodeltrain <- dlmodel %>% fit (training, 
                                traininglabels,
                                epoch=200, # number of iterations #
                                batch_size=10, # default=32 # 
                                validation_split=0.2) # 20% of the data #
 
-plot(dlmodelfit)
+plot(dlmodeltrain)
 
 
 # Evaluating the model with test data
@@ -86,7 +86,8 @@ dlmodeltest <- dlmodel %>% evaluate(testing,testinglabels)
 
 prob <- dlmodel %>% predict_proba(testing)
 pred <- dlmodel %>% predict_classes(testing)
-table1 <- table(Predicted =pred, Actual= testlabels)
+table1 <- table(Predicted =pred, Actual= testinglabels)
+table1
 cbind(prob, pred, testinglabels)
 
 
