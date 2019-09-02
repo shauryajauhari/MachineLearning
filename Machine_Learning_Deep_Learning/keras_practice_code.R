@@ -66,16 +66,27 @@ dlmodel %>% compile (loss='categorical_crossentropy',
                      optimizer='adam',
                      metrics='accuracy')
 
-# Fitting the model
+# Fitting the model with training data
 
-# Store the fitting history in `history` 
-history <- dlmodel %>% fit(
-  training, 
-  traininglabels, 
-  epochs = 200,
-  batch_size = 5, 
-  validation_split = 0.2
-)
+dlmodelfit <- dlmodel %>% fit (training, 
+                               traininglabels,
+                               epoch=200, # number of iterations #
+                               batch_size=10, # default=32 # 
+                               validation_split=0.2) # 20% of the data #
 
-# Plot the history
-plot(history)
+plot(dlmodelfit)
+
+
+# Evaluating the model with test data
+
+dlmodeltest <- dlmodel %>% evaluate(testing,testinglabels) 
+
+
+# Prediction and Confusion Matrix from test data
+
+prob <- dlmodel %>% predict_proba(testing)
+pred <- dlmodel %>% predict_classes(testing)
+table1 <- table(Predicted =pred, Actual= testlabels)
+cbind(prob, pred, testinglabels)
+
+
