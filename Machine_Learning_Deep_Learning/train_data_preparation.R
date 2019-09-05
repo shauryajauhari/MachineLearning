@@ -30,7 +30,7 @@ write.table(dhs,"./data/H1_Cell_Line/h1_dhs.bed", sep="\t", row.names=FALSE, quo
 ## Add class to the data: "enhancer"
 
 h1_p300_dhs_intersect <- read.table("./data/H1_Cell_Line/h1_p300_dhs_intersect.bed", sep = "\t")
-h1_p300_dhs_intersect$V4 <- "enhancer"
+h1_p300_dhs_intersect$V4 <- "Enhancer"
 write.table(h1_p300_dhs_intersect,"./data/H1_Cell_Line/h1_p300_dhs_intersect_class.bed",sep="\t",row.names=FALSE, quote = FALSE)
 
 #################################################################################################################

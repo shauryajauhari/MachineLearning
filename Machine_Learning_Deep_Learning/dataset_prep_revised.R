@@ -34,3 +34,60 @@ test$peaks_h3k4me3 <- as.double(as.character(test$peaks_h3k4me3))
 test$peaks_h3k4me2 <- as.double(as.character(test$peaks_h3k4me2))
 test$peaks_h3k4me1 <- as.double(as.character(test$peaks_h3k4me1))
 test$peaks_h3k27ac <- as.double(as.character(test$peaks_h3k27ac))
+
+
+## Merging Data on the basis of overlapping intervals
+
+## Positive class data (labels)
+positive_class
+
+## Negative class (Labels)
+negative_class
+
+## Score Matrix (Input data)
+input_score_data <- read.table("./data/H1_Cell_Line/bedtools_Merge_2000.bedgraph", sep = "\t", header = FALSE)
+input_score_data<- as.data.frame(input_score_data[input_score_data$V1 %in% chromosomes, ])
+
+
+## Converting data to GRanges objects
+library(GenomicRanges)
+positive_class_labels <- GRanges(seqnames = positive_class$V1, ranges = IRanges(start = positive_class$V2, 
+                                                                       end = positive_class$V3))
+mcols(positive_class_labels) <- DataFrame(class= "Enhancer")
+
+
+negative_class_labels <- GRanges(seqnames = negative_class$V1, ranges = IRanges(start = negative_class$V2, 
+                                                                       end = negative_class$V3))
+mcols(negative_class_labels) <- DataFrame(class= "Non-Enhancer")
+
+
+input_score <- GRanges(seqnames = input_score_data$V1, ranges = IRanges(start = input_score_data$V2,
+                                                                        end = input_score_data$V3))
+mcols(input_score) <- DataFrame(peaks_h3k27ac = input_score_data$V4, peaks_h3k4me3 = input_score_data$V5,
+                                peaks_h3k4me2 = input_score_data$V6, peaks_h3k4me1 = input_score_data$V7)
+
+## Performing merge to figure out the score and class matrix.
+
+intermatrix1 <- merge(positive_class_labels, negative_class_labels, all= TRUE) ## positive and negative classes ##
+intermatrix2 <- merge(intermatrix1, input_score, all= TRUE) ## scores and classes ##
+
+## Pulling back the data frame from the GenomicRanges format for (i) sorting (ii) removing NAs.
+
+final_data <- data.frame(intermatrix2)
+str(final_data)
+
+## Sorting on the basis of first two columns, viz. seqnames, start.
+final_data <- final_data[order(final_data$seqnames, final_data$start),]
+
+## Pruning rows involving NA terms.
+
+for(i in 1:nrow(final_data)) ## all rows
+{
+  for(j in 1:length(final_data)) ## all columns
+  {
+    if (is.na(final_data[i,j])) ## if a cell has 'NA'
+    {
+      final_data <- final_data[-i,] ## remove that particular row
+    }
+  }
+}
