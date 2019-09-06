@@ -78,16 +78,17 @@ str(final_data)
 
 ## Sorting on the basis of first two columns, viz. seqnames, start.
 final_data <- final_data[order(final_data$seqnames, final_data$start),]
+buffer_final_data <- final_data
 
 ## Pruning rows involving NA terms.
 
-for(i in 1:nrow(final_data)) ## all rows
+for(i in 1:nrow(buffer_final_data)) ## all rows
 {
-  for(j in 1:length(final_data)) ## all columns
+  for(j in 1:length(buffer_final_data)) ## all columns
   {
-    if (is.na(final_data[i,j])) ## if a cell has 'NA'
+    if (is.na(buffer_final_data[i,j])) ## if a cell has 'NA'
     {
-      final_data <- final_data[-i,] ## remove that particular row
+      buffer_final_data <- buffer_final_data[-i,] ## remove that particular row
     }
   }
 }
