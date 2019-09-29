@@ -88,7 +88,7 @@ write.table(tss_or_p300,"./data/H1_Cell_Line/tss_or_p300.bed", sep="\t", row.nam
 
 
 ## Import resultant files from intersection.
-negative_class <- read.table("./data/H1_Cell_Line/negative_class.bed", sep = "\t", header = FALSE)
+negative_class <- read.table("./data/H1_Cell_Line/negative_class.bed", sep = "\t", header = TRUE)
 negative_class$V4 <- "Non-Enhancer"
 write.table(negative_class,"./data/H1_Cell_Line/negative_class.bed", sep="\t", row.names=FALSE, quote = FALSE)
 

@@ -78,17 +78,26 @@ str(final_data)
 
 ## Sorting on the basis of first two columns, viz. seqnames, start.
 final_data <- final_data[order(final_data$seqnames, final_data$start),]
+
+## Let's make a duplicate copy of the final results dataframe for further processing. We must preserve a copy for backup.
 buffer_final_data <- final_data
 
-## Pruning rows involving NA terms.
+## Pruning rows involving NA terms. | DOESN'T WORK !!!
 
-for(i in 1:nrow(buffer_final_data)) ## all rows
-{
-  for(j in 1:length(buffer_final_data)) ## all columns
-  {
-    if (is.na(buffer_final_data[i,j])) ## if a cell has 'NA'
-    {
-      buffer_final_data <- buffer_final_data[-i,] ## remove that particular row
-    }
-  }
-}
+# for(i in 1:nrow(buffer_final_data)) ## all rows
+# {
+#   for(j in 1:length(buffer_final_data)) ## all columns
+#   {
+#     if (is.na(buffer_final_data[i,j])) ## if a cell has 'NA'
+#     {
+#       buffer_final_data <- buffer_final_data[-i,] ## remove that particular row
+#     }
+#   }
+# }
+
+## Replacing NAs with 0s(zeros) in the peaks' columns.
+
+buffer_final_data$peaks_h3k27ac[is.na(buffer_final_data$peaks_h3k27ac)] <- 0
+buffer_final_data$peaks_h3k4me3[is.na(buffer_final_data$peaks_h3k4me3)] <- 0
+buffer_final_data$peaks_h3k4me2[is.na(buffer_final_data$peaks_h3k4me2)] <- 0
+buffer_final_data$peaks_h3k4me1[is.na(buffer_final_data$peaks_h3k4me1)] <- 0
