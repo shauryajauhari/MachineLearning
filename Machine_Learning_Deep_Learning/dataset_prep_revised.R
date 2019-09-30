@@ -68,19 +68,24 @@ mcols(input_score) <- DataFrame(peaks_h3k27ac = input_score_data$V4, peaks_h3k4m
 
 ## Performing merge to figure out the score and class matrix.
 
-intermatrix1 <- merge(positive_class_labels, negative_class_labels, all= TRUE) ## positive and negative classes ##
-intermatrix2 <- merge(intermatrix1, input_score, all= TRUE) ## scores and classes ##
+intermatrix1 <- merge(as.data.frame(positive_class_labels), as.data.frame(negative_class_labels), all= TRUE) ## positive and negative classes ##
+intermatrix2 <- merge(as.data.frame(intermatrix1), as.data.frame(input_score), all= TRUE) ## scores and classes ##
 
-## Pulling back the data frame from the GenomicRanges format for (i) sorting (ii) removing NAs.
+str(intermatrix2)
 
-final_data <- data.frame(intermatrix2)
-str(final_data)
+## Let's make a duplicate copy of the final results dataframe for further processing. We must preserve a copy for backup.
+final_data <- intermatrix2
+
+## Replacing NAs with 0s(zeros) in the peaks' columns. Since the score data is not available, imputing empty cells with
+## zero entries engenders mathematical convenience.
+
+final_data$peaks_h3k27ac[is.na(final_data$peaks_h3k27ac)] <- 0
+final_data$peaks_h3k4me3[is.na(final_data$peaks_h3k4me3)] <- 0
+final_data$peaks_h3k4me2[is.na(final_data$peaks_h3k4me2)] <- 0
+final_data$peaks_h3k4me1[is.na(final_data$peaks_h3k4me1)] <- 0
 
 ## Sorting on the basis of first two columns, viz. seqnames, start.
 final_data <- final_data[order(final_data$seqnames, final_data$start),]
-
-## Let's make a duplicate copy of the final results dataframe for further processing. We must preserve a copy for backup.
-buffer_final_data <- final_data
 
 ## Pruning rows involving NA terms. | DOESN'T WORK !!!
 
@@ -94,10 +99,3 @@ buffer_final_data <- final_data
 #     }
 #   }
 # }
-
-## Replacing NAs with 0s(zeros) in the peaks' columns.
-
-buffer_final_data$peaks_h3k27ac[is.na(buffer_final_data$peaks_h3k27ac)] <- 0
-buffer_final_data$peaks_h3k4me3[is.na(buffer_final_data$peaks_h3k4me3)] <- 0
-buffer_final_data$peaks_h3k4me2[is.na(buffer_final_data$peaks_h3k4me2)] <- 0
-buffer_final_data$peaks_h3k4me1[is.na(buffer_final_data$peaks_h3k4me1)] <- 0

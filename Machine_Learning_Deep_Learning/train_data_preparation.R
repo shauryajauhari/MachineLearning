@@ -78,17 +78,17 @@ tss_final <- read.table("./data/H1_Cell_Line/tss_sites_header_removed.bed", sep 
 p300_final <- read.table("./data/H1_Cell_Line/h1_p300_merged.bed", sep = "\t", header = FALSE)
 
 ## Combine the intervals and not 'merge' them
-tss_or_p300 <- rbind(tss_final,p300_final)
+tss_and_p300 <- rbind(tss_final,p300_final)
 
 ## sort on the basis of chromosome names.
-tss_or_p300 <- tss_or_p300[order(tss_or_p300[,1]),]
+tss_and_p300 <- tss_and_p300[order(tss_and_p300[,1]),]
 
 ## Output file.
-write.table(tss_or_p300,"./data/H1_Cell_Line/tss_or_p300.bed", sep="\t", row.names=FALSE, quote = FALSE)
+write.table(tss_and_p300,"./data/H1_Cell_Line/tss_and_p300.bed", sep="\t", row.names=FALSE, quote = FALSE)
 
 
 ## Import resultant files from intersection.
-negative_class <- read.table("./data/H1_Cell_Line/negative_class.bed", sep = "\t", header = TRUE)
+negative_class <- read.table("./data/H1_Cell_Line/negative_class.bed", sep = "\t", header = FALSE)
 negative_class$V4 <- "Non-Enhancer"
 write.table(negative_class,"./data/H1_Cell_Line/negative_class.bed", sep="\t", row.names=FALSE, quote = FALSE)
 
