@@ -12,7 +12,7 @@ colnames(h3k4me1) <- c("chrom","start","end","peaks")
 
 ## Importing the merged BEDGRAPH/BW file
 
-merged_bw <- read.csv("./data/H1_Cell_Line/bedtools_Merge_2000.bedgraph", sep = '\t', header = FALSE)
+merged_bw <- read.csv("./data/H1_Cell_Line/bedtools_Merge_100.bedgraph", sep = '\t', header = FALSE)
 #merged_bw <- merged_bw[-1,]
 colnames(merged_bw) <- c("chrom", "start", "end", "peaks_h3k27ac", "peaks_h3k4me3", "peaks_h3k4me2", "peaks_h3k4me1")
 head(merged_bw)
@@ -45,9 +45,17 @@ positive_class
 negative_class
 
 ## Score Matrix (Input data)
-input_score_data <- read.table("./data/H1_Cell_Line/bedtools_Merge_2000.bedgraph", sep = "\t", header = FALSE)
+input_score_data <- read.table("./data/H1_Cell_Line/bedtools_Merge_100_header_removed.bw", sep = "\t", header = FALSE)
 input_score_data<- as.data.frame(input_score_data[input_score_data$V1 %in% chromosomes, ])
 
+
+## Replacing NAs with 0s(zeros) in the peaks' columns. Since the score data is not available, imputing empty cells with
+## zero entries engenders mathematical convenience.
+
+input_score_data$V4[is.na(input_score_data$V4)] <- 0 
+input_score_data$V5[is.na(input_score_data$V5)] <- 0 
+input_score_data$V6[is.na(input_score_data$V6)] <- 0 
+input_score_data$V7[is.na(input_score_data$V7)] <- 0 
 
 ## Converting data to GRanges objects
 library(GenomicRanges)
@@ -68,34 +76,33 @@ mcols(input_score) <- DataFrame(peaks_h3k27ac = input_score_data$V4, peaks_h3k4m
 
 ## Performing merge to figure out the score and class matrix.
 
-intermatrix1 <- merge(as.data.frame(positive_class_labels), as.data.frame(negative_class_labels), all= TRUE) ## positive and negative classes ##
-intermatrix2 <- merge(as.data.frame(intermatrix1), as.data.frame(input_score), all= TRUE) ## scores and classes ##
+intermatrix <- merge(as.data.frame(positive_class_labels), as.data.frame(negative_class_labels), all= TRUE) ## positive and negative classes ##
 
-str(intermatrix2)
 
-## Let's make a duplicate copy of the final results dataframe for further processing. We must preserve a copy for backup.
-final_data <- intermatrix2
+## Exporting 'intermatrix1' and 'input_score' as bed files to merge.
+write.table(intermatrix, "./data/class_labels.bed", sep ='\t', quote = FALSE, row.names = FALSE)
+write.table(input_score, "./data/score.bed", sep ='\t', quote = FALSE, row.names = FALSE)
 
-## Replacing NAs with 0s(zeros) in the peaks' columns. Since the score data is not available, imputing empty cells with
-## zero entries engenders mathematical convenience.
+## Importing the merged file
+score_labels <- read.table("./data/score_labels.bed", sep = "\t", header = FALSE, stringsAsFactors=FALSE)
 
-final_data$peaks_h3k27ac[is.na(final_data$peaks_h3k27ac)] <- 0
-final_data$peaks_h3k4me3[is.na(final_data$peaks_h3k4me3)] <- 0
-final_data$peaks_h3k4me2[is.na(final_data$peaks_h3k4me2)] <- 0
-final_data$peaks_h3k4me1[is.na(final_data$peaks_h3k4me1)] <- 0
+## Picking relevant columns
+final_data <- score_labels[,c(6:9,15)]
+colnames(final_data)=c("peaks_h3k27ac","peaks_h3k4me3","peaks_h3k4me2","peaks_h3k4me1","class")
 
-## Sorting on the basis of first two columns, viz. seqnames, start.
-final_data <- final_data[order(final_data$seqnames, final_data$start),]
+## The matrix is a sparse matrix, having many non-zero entries. Let us convert it into a sparse matrix object.
+library(Matrix)
+final_sparse_data <- final_data
+final_sparse_data$class <- as.numeric(as.factor(final_sparse_data$class))-1
+final_sparse_data$peaks_h3k27ac <- as.numeric(final_sparse_data$peaks_h3k27ac)
+final_sparse_data$peaks_h3k4me3 <- as.numeric(final_sparse_data$peaks_h3k4me3)
+final_sparse_data$peaks_h3k4me2 <- as.numeric(final_sparse_data$peaks_h3k4me2)
+final_sparse_data$peaks_h3k4me1 <- as.numeric(final_sparse_data$peaks_h3k4me1)
 
-## Pruning rows involving NA terms. | DOESN'T WORK !!!
+## Converting data frame to matrix and then to sparse matrix.
+final_sparse_data <- data.matrix(final_sparse_data)
+final_sparse_data <- Matrix(final_sparse_data, sparse=TRUE)
 
-# for(i in 1:nrow(buffer_final_data)) ## all rows
-# {
-#   for(j in 1:length(buffer_final_data)) ## all columns
-#   {
-#     if (is.na(buffer_final_data[i,j])) ## if a cell has 'NA'
-#     {
-#       buffer_final_data <- buffer_final_data[-i,] ## remove that particular row
-#     }
-#   }
-# }
+## Let's visualize.
+head(final_sparse_data)
+print(object.size(final_sparse_data),units="auto")
