@@ -100,6 +100,14 @@ final_sparse_data$peaks_h3k4me2 <- as.numeric(final_sparse_data$peaks_h3k4me2)
 final_sparse_data$peaks_h3k4me1 <- as.numeric(final_sparse_data$peaks_h3k4me1)
 
 final_sparse_data <- final_sparse_data[complete.cases(final_sparse_data), ]
+
+## Saving this data
+saveRDS(final_sparse_data,"./data/ep_data.rds")
+
+## Sample data
+final_sparse_data_sample <- final_sparse_data[sample(nrow(final_sparse_data), 10000), ]
+saveRDS(final_sparse_data_sample,"./data/ep_data_sample.rds")
+
 ## Converting data frame to matrix and then to sparse matrix.
 final_sparse_data_matrix <- data.matrix(final_sparse_data)
 final_sparse_data_matrix <- Matrix(final_sparse_data_matrix, sparse=TRUE)

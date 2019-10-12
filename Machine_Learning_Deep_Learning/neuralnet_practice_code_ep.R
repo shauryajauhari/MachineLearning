@@ -7,43 +7,29 @@ library(neuralnet)
 
 
 ## Let us consider our example dataset
-d1 <- iris
-str(d1)
-
-## Introduce a novel class definition.
-## 0 signifies a leaf and 1, a flower.
-
-d1$class <- as.integer(sample(c(0,1)))
-str(d1$class)
-
-## Remove the original classification of the flower type.
-d1 <- d1[,-5]
-
+d <- readRDS("./data/ep_data_sample.rds")
+str(d)
 
 # Min-Max normalization
-d1$Sepal.Length <- (d1$Sepal.Length-min(d1$Sepal.Length, na.rm = T))/(max(d1$Sepal.Length, na.rm = T)-min(d1$Sepal.Length, na.rm = T))
-d1$Sepal.Width <- (d1$Sepal.Width-min(d1$Sepal.Width, na.rm = T))/(max(d1$Sepal.Width, na.rm = T)-min(d1$Sepal.Width, na.rm = T))
-d1$Petal.Length <- (d1$Petal.Length-min(d1$Petal.Length, na.rm = T))/(max(d1$Petal.Length, na.rm = T)-min(d1$Petal.Length, na.rm = T))
-d1$Petal.Width <- (d1$Petal.Width-min(d1$Petal.Width, na.rm = T))/(max(d1$Petal.Width, na.rm = T)-min(d1$Petal.Width, na.rm = T))
-
-
-# Let us shuffle the dataset for fair distribution of classes.
-d2 <- d1[sample(nrow(d1)),]
+d$peaks_h3k27ac <- (d$peaks_h3k27ac-min(d$peaks_h3k27ac, na.rm = T))/(max(d$peaks_h3k27ac, na.rm = T)-min(d$peaks_h3k27ac, na.rm = T))
+d$peaks_h3k4me3 <- (d$peaks_h3k4me3-min(d$peaks_h3k4me3, na.rm = T))/(max(d$peaks_h3k4me3, na.rm = T)-min(d$peaks_h3k4me3, na.rm = T))
+d$peaks_h3k4me2 <- (d$peaks_h3k4me2-min(d$peaks_h3k4me2, na.rm = T))/(max(d$peaks_h3k4me2, na.rm = T)-min(d$peaks_h3k4me2, na.rm = T))
+d$peaks_h3k4me1 <- (d$peaks_h3k4me1-min(d$peaks_h3k4me1, na.rm = T))/(max(d$peaks_h3k4me1, na.rm = T)-min(d$peaks_h3k4me1, na.rm = T))
 
 # Data Partition
-set.seed(108)
-ind <- sample(2, nrow(d2), replace = TRUE, prob = c(0.7, 0.3))
-training <- d2[ind==1,]
-testing <- d2[ind==2,]
+set.seed(100)
+ind <- sample(2, nrow(d), replace = TRUE, prob = c(0.7, 0.3))
+training <- d[ind==1,]
+testing <- d[ind==2,]
 
 # Neural Networks
-set.seed(007)
-nn <- neuralnet(class~Sepal.Length+Sepal.Width+Petal.Length+Petal.Width,
-               data = training,
-               hidden = 5,
-               err.fct = "sse",
-               act.fct = "logistic",
-               linear.output = FALSE)
+set.seed(005)
+nn <- neuralnet(class~peaks_h3k27ac+peaks_h3k4me3+peaks_h3k4me2+peaks_h3k4me1,
+                data = training,
+                hidden = 5,
+                err.fct = "sse",
+                act.fct = "logistic",
+                linear.output = FALSE)
 plot(nn)
 
 # Prediction
