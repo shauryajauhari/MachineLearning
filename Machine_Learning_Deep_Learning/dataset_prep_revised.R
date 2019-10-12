@@ -99,10 +99,11 @@ final_sparse_data$peaks_h3k4me3 <- as.numeric(final_sparse_data$peaks_h3k4me3)
 final_sparse_data$peaks_h3k4me2 <- as.numeric(final_sparse_data$peaks_h3k4me2)
 final_sparse_data$peaks_h3k4me1 <- as.numeric(final_sparse_data$peaks_h3k4me1)
 
+final_sparse_data <- final_sparse_data[complete.cases(final_sparse_data), ]
 ## Converting data frame to matrix and then to sparse matrix.
-final_sparse_data <- data.matrix(final_sparse_data)
-final_sparse_data <- Matrix(final_sparse_data, sparse=TRUE)
+final_sparse_data_matrix <- data.matrix(final_sparse_data)
+final_sparse_data_matrix <- Matrix(final_sparse_data_matrix, sparse=TRUE)
 
 ## Let's visualize.
-head(final_sparse_data)
-print(object.size(final_sparse_data),units="auto")
+head(final_sparse_data_matrix)
+print(object.size(final_sparse_data_matrix),units="auto")
