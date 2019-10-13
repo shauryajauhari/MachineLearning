@@ -1,5 +1,5 @@
 ---
-title: "Example2_LogisticRegression"
+title: "Example2_Logistic_Regression"
 author: 'Shaurya Jauhari (Email: shauryajauhari@gzhmu.edu.cn)'
 date: '`r paste(Sys.Date())`'
 output:
