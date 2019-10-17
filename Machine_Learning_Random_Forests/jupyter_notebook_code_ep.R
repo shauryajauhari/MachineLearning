@@ -117,7 +117,16 @@ confusionMatrix(as.factor(p3),as.factor(test_sample$class))
 
 
 # Number of nodes for the trees
-hist(treesize(rf2), col = "cyan", main = "Number of nodes in the trees")
+library(ggplot2)
+ts <- as.data.frame(treesize(rf2), row.names = c())
+ggplot(data = ts, aes(x = `treesize(rf2)`)) + 
+  geom_histogram(binwidth = 5, color="purple", fill="lavender", position="identity", alpha=0.7)+
+  labs(x="Trees", y="Sizes")+
+  ggtitle("Number of Nodes in the Trees")+
+  geom_density(alpha=0.6)+
+  theme_light()+
+  theme(plot.title= element_text(size = 20, face = "bold"),
+        axis.title = element_text(size = 12))
 
 # Variable Importance
 
