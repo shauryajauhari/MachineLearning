@@ -4,31 +4,40 @@ author: 'Shaurya Jauhari (Email: shauryajauhari@gzhmu.edu.cn)'
 date: '`r paste(Sys.Date())`'
 output:
   pdf_document: default
-  html_document:
-    df_print: paged
-  word_document: default
+  number_sections: true
 ---
+
+\tableofcontents
+
+***
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-In this module, we're going to explore the gradient boosting algorithm. *Gradient boosting could be construed as a unison of boosting and gradient descent techniques*, i.e. boosting carried out on the gradient descent of the cost function.
-The gradient descent approach, in loose terms, is the protocol to reach the minima of the function that maps the error terms. Our objective is to minimize the error (error between the true values and the predicted values), thereby finding appropriate coefficients that fit the objective function's equation in a way that best approximations are engendered.  
+
+## Introduction
+
+<p> In this module, we're going to explore the gradient boosting algorithm. *Gradient boosting could be construed as a unison of boosting and gradient descent techniques*, i.e. boosting carried out on the gradient descent of the cost function.
+The gradient descent approach, in loose terms, is the protocol to reach the minima of the function that maps the error terms. Our objective is to minimize the error (error between the true values and the predicted values), thereby finding appropriate coefficients that fit the objective function's equation in a way that best approximations are engendered. </p>
+<p> Boosting is a way to derive random sub-samples of the same size as the original one.</p>
+<p> This aspect of gradient boosting differentiates it from randome forests that aim to aggregate outputs from multiple single-decision trees, implementing basically a consensus-based scheme. Gradient Boosting would contrarily penalize the leafs from the same decision tree until the gradient descent strategy's optimal parameters are met.</p>
 
 
 ## Package Installation
 
-The package in question is "gbm".
+<p>The package in question is "gbm".</p>
 
 ```{r installation}
+
 install.packages("gbm", dependencies = TRUE, verbose = TRUE,
                  repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
 library(gbm)
+
 ```
 
 ## Dataset
 
-We'll be employing the enhancer prediction dataset to exemplify the application of gradient boosting algorithm. The details for the dataset could be reached [here](https://nbviewer.jupyter.org/github/shauryajauhari/Machine_Learning/blob/master/Machine_Learning_Deep_Learning/enhancer_prediction_dataset_protocol.ipynb).
+<p>We'll be employing the enhancer prediction dataset to exemplify an application of gradient boosting algorithm. The details for the dataset could be reached [here](https://nbviewer.jupyter.org/github/shauryajauhari/Machine_Learning/blob/master/Machine_Learning_Deep_Learning/enhancer_prediction_dataset_protocol.ipynb).</p>
 
 ```{r data loading}
 
