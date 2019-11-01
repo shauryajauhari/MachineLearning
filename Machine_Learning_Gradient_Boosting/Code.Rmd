@@ -1,0 +1,44 @@
+---
+title: "Machine Learning via Gradient Boosting"
+author: 'Shaurya Jauhari (Email: shauryajauhari@gzhmu.edu.cn)'
+date: '`r paste(Sys.Date())`'
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+In this module, we're going to explore the gradient boosting algorithm. 
+
+
+## Package Installation
+
+The package in question is "gbm".
+
+```{r installation}
+install.packages("gbm", dependencies = TRUE, verbose = TRUE,
+                 repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
+library(gbm)
+```
+
+## Dataset
+
+We'll be employing the enhancer prediction dataset to exemplify the application of gradient boosting algorithm. The details for the dataset could be reached [here](https://nbviewer.jupyter.org/github/shauryajauhari/Machine_Learning/blob/master/Machine_Learning_Deep_Learning/enhancer_prediction_dataset_protocol.ipynb).
+
+```{r data loading}
+
+epdata <- readRDS("../Machine_Learning_Deep_Learning/data/ep_data.rds")
+rownames(epdata) <- c()
+
+
+set.seed(001)
+data_partition <- sample(2, nrow(epdata), replace = TRUE, prob = c(0.8,0.2))
+train <- epdata[data_partition==1,]
+test <- epdata[data_partition==2,]
+
+```
+
