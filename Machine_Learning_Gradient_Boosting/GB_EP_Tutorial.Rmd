@@ -12,7 +12,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-In this module, we're going to explore the gradient boosting algorithm. 
+In this module, we're going to explore the gradient boosting algorithm. *Gradient boosting could be construed as a unison of boosting and gradient descent techniques*, i.e. boosting carried out on the gradient descent of the cost function.
+The gradient descent approach, in loose terms, is the protocol to reach the minima of the function that maps the error terms. Our objective is to minimize the error (error between the true values and the predicted values), thereby finding appropriate coefficients that fit the objective function's equation in a way that best approximations are engendered.  
 
 
 ## Package Installation
