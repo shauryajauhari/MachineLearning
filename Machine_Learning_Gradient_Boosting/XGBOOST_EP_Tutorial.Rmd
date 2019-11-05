@@ -1,0 +1,133 @@
+---
+title: "Application of XGBOOST for classification task in the enhancer prediction data."
+author: 'Shaurya Jauhari (Email: shauryajauhari@gzhmu.edu.cn)'
+date: '`r paste(Sys.Date())`'
+output:
+  pdf_document: default
+  fig_caption: yes
+  number_sections: true
+  fontsize: 12pt
+  geometry: margin=1in
+---
+
+\tableofcontents
+\listoffigures
+
+***
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+<p> Extreme Gradient Boosting (XGBOOST) is another method for exploring the gradient boosting technique, but is reportedly faster than other methods. The underlying dogma stays the same that the sequential boosting is performed. </p> 
+
+
+## Package Installation
+
+<p> The package in question is "xgboost". </p>
+
+```{r installation}
+
+install.packages("xgboost", dependencies = TRUE, verbose = TRUE,
+                 repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
+```
+
+## Dataset
+
+<p> We'll be employing the enhancer prediction dataset to exemplify an application of gradient boosting algorithm. The details for the dataset could be reached [here](https://nbviewer.jupyter.org/github/shauryajauhari/Machine_Learning/blob/master/Machine_Learning_Deep_Learning/enhancer_prediction_dataset_protocol.ipynb). </p>
+
+
+```{r data loading}
+
+epdata <- readRDS("../Machine_Learning_Deep_Learning/data/ep_data_sample.rds")
+rownames(epdata) <- c()
+
+
+set.seed(001)
+data_partition <- sample(3, nrow(epdata), replace = TRUE, prob = c(0.64,0.16,0.2))
+train <- epdata[data_partition==1,]
+test <- epdata[data_partition==2,]
+holdout <- epdata[data_partition==3,]
+
+head(train)
+
+```
+<p> XGBOOST works on numeric vectors. The class labels and feature data are so available. The feature data has to be compiled as a data matrix though. </p>
+
+## One-Hot Encoding
+
+```{r one hot encoding}
+
+library(keras)
+train_labels <- to_categorical(train$class)
+test_labels <- to_categorical(test$class)
+
+```
+
+
+## Implementation
+
+```{r basic implementation}
+library(xgboost)
+xgbmodel1 <- xgboost(data = as.matrix(train[,1:4]), 
+                     label = train$class, 
+                     max_depth = 2, 
+                     eta = 1, 
+                     nthread = 2, 
+                     nrounds = 2, 
+                     objective = "binary:logistic") # binary classification , i.e. enhancer or non-enhancer.
+
+```
+
+<p> It is usual to have data with more zero entries. The sparse data format of a matrix relieves the memory for storing such cells, thereby reducing the data storage size. However, that shouldn't make any difference in the results. </p>
+
+
+<p> XGBOOST also provides a format *DMatrix* to convert a data table into a matrix, whether sparse or dense. It is recommended in use as well. </p> 
+
+```{r xgb.dmatrix conversion and cross validation}
+
+
+train_data <- xgb.DMatrix(data = as.matrix(train[,1:4]), label= train$class) 
+test_data <- xgb.DMatrix(data = as.matrix(test[,1:4]), label= test$class) 
+
+
+xgbcv1 <- xgb.cv( data = train_data,
+                 nrounds = 100, 
+                 nfold = 5, 
+                 showsd = T, 
+                 stratified = T, 
+                 print.every.n = 10, 
+                 early.stop.round = 20, 
+                 maximize = F)
+
+```
+
+## Accuracy and Prediction
+
+```{r checking accuracy for the model}
+
+cat("The accuracy is", 100 - (min(xgbcv1$evaluation_log$test_rmse_mean)*100), ". Since we are using the corss-validation scheme, the test/validation data is derived from the train data (input) itself.")
+
+```
+
+```{r make predictions}
+
+#model prediction
+xgbpred <- predict (xgbmodel1,test_data)
+xgbpred <- ifelse (xgbpred > 0.5,1,0) # 1:Non-Enhancers, 0: Enhancers
+
+table(xgbpred)
+```
+
+```{r variable importance plot}
+
+var_imp <- xgb.importance (feature_names = colnames(train[,1:4]),model = xgbmodel1)
+var_imp
+
+
+xgb.plot.importance (importance_matrix = var_imp)
+
+```
+
