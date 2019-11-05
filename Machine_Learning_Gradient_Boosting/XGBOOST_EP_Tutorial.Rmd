@@ -1,17 +1,12 @@
 ---
 title: "Application of XGBOOST for classification task in the enhancer prediction data."
 author: 'Shaurya Jauhari (Email: shauryajauhari@gzhmu.edu.cn)'
-date: '`r paste(Sys.Date())`'
+date: "`r paste(Sys.Date())`"
 output:
-  pdf_document: default
-  fig_caption: yes
-  number_sections: true
-  fontsize: 12pt
-  geometry: margin=1in
+  html_document:
+    toc: true
+    theme: united
 ---
-
-\tableofcontents
-\listoffigures
 
 ***
 
@@ -70,6 +65,7 @@ test_labels <- to_categorical(test$class)
 ## Implementation
 
 ```{r basic implementation}
+
 library(xgboost)
 xgbmodel1 <- xgboost(data = as.matrix(train[,1:4]), 
                      label = train$class, 
@@ -128,6 +124,13 @@ var_imp
 
 
 xgb.plot.importance (importance_matrix = var_imp)
+
+```
+## Model Inspection
+
+```{r visualizing the tree}
+
+xgb.plot.tree(feature_names = colnames(train[,1:4]), model = xgbmodel1)
 
 ```
 
