@@ -2726,7 +2726,7 @@ The package in question is “xgboost”.
 ## (as &#39;lib&#39; is unspecified)</code></pre>
 <pre><code>## 
 ## The downloaded binary packages are in
-##  /var/folders/hm/c3_fjypn62v5xh5b5ygv267m0000gn/T//RtmpkVWWfU/downloaded_packages</code></pre>
+##  /var/folders/hm/c3_fjypn62v5xh5b5ygv267m0000gn/T//Rtmp2hr59F/downloaded_packages</code></pre>
 </div>
 <div id="dataset" class="section level2">
 <h2>Dataset</h2>
@@ -2808,8 +2808,8 @@ xgbcv1 &lt;- xgb.cv( data = train_data,
 </div>
 <div id="accuracy-and-prediction" class="section level2">
 <h2>Accuracy and Prediction</h2>
-<pre class="r"><code>cat(&quot;The accuracy is&quot;, 100 - (min(xgbcv1$evaluation_log$test_rmse_mean)*100), &quot;. Since we are using the corss-validation scheme, the test/validation data is derived from the train data (input) itself.&quot;)</code></pre>
-<pre><code>## The accuracy is 51.76274 . Since we are using the corss-validation scheme, the test/validation data is derived from the train data (input) itself.</code></pre>
+<pre class="r"><code>cat(&quot;The accuracy is&quot;, 100 - (min(xgbcv1$evaluation_log$test_rmse_mean)*100), &quot;. Since we are using the cross-validation scheme, the test/validation data is derived from the train data (input) itself.&quot;)</code></pre>
+<pre><code>## The accuracy is 51.76274 . Since we are using the cross-validation scheme, the test/validation data is derived from the train data (input) itself.</code></pre>
 <pre class="r"><code>#model prediction
 xgbpred &lt;- predict (xgbmodel1,test_data)
 xgbpred &lt;- ifelse (xgbpred &gt; 0.5,1,0) # 1:Non-Enhancers, 0: Enhancers

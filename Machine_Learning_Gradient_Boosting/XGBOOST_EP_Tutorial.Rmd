@@ -104,7 +104,7 @@ xgbcv1 <- xgb.cv( data = train_data,
 
 ```{r checking accuracy for the model}
 
-cat("The accuracy is", 100 - (min(xgbcv1$evaluation_log$test_rmse_mean)*100), ". Since we are using the corss-validation scheme, the test/validation data is derived from the train data (input) itself.")
+cat("The accuracy is", 100 - (min(xgbcv1$evaluation_log$test_rmse_mean)*100), ". Since we are using the cross-validation scheme, the test/validation data is derived from the train data (input) itself.")
 
 ```
 
