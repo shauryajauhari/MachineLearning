@@ -3,11 +3,9 @@ title: "Using Gradient Boosting for enhancer-promoter-class data predictions."
 author: 'Shaurya Jauhari (Email: shauryajauhari@gzhmu.edu.cn)'
 date: '`r paste(Sys.Date())`'
 output:
-  pdf_document: default
-  fig_caption: yes
-  number_sections: true
-  fontsize: 12pt
-  geometry: margin=1in
+  html_document:
+    toc: true
+    theme: united
 ---
 
 \tableofcontents
