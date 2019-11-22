@@ -1,6 +1,26 @@
 ## Importing relevant data ##
 ## Positive Class Labels ##
 
+################################################ REVISION ##########################################################################
+# INSTEAD OF DOWNLOADING THE BED FILES AND USING THEM DIRECTLY, LETS CONVERT THEM TO BAM AND MODIFY THEIR INTERVALS  ###############
+# OR ######  USE THE FOLLOWING CHUNK ###############################################################################################
+####################################################################################################################################
+# dhs_r <- download.file("ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM878nnn/GSM878621/suppl/GSM878621%5FUW%2EH1%2EChromatinAccessibility%2EDS19100%2Ebed%2Egz", "./delme") 
+
+library(rtracklayer)
+dhs_try <- import.bed("./data/H1_Cell_Line/GSM878621_H1_DNase_sorted.bed")
+delme <- dhs_try[seqnames(dhs_try) == chromosomes]
+
+library(GenomicRanges)
+dhs_try_resize <- resize(delme, width = 2000)
+delme <- as.data.frame(dhs_try_resize)
+export.bed(dhs_try_resize, "delme.bed")
+
+system("bedtools sort -i delme.bed > delme_sorted.bed")
+system("mergeBed -i delme_sorted.bed > delme_sorted_merged.bed")
+
+####################################################################################################################################
+
 dhs <- read.csv("./data/H1_Cell_Line/GSM878621_H1_DNase_sorted.bed", sep = '\t', header = FALSE)
 p300 <- read.csv("./data/H1_Cell_Line/GSM831036_H1_P300_sorted.bed", sep = '\t', header = FALSE)
 
@@ -20,12 +40,15 @@ chromosomes <- c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9",
 dhs <- as.data.frame(dhs[dhs$chrom %in% chromosomes, ])
 p300 <- as.data.frame(p300[p300$chrom %in% chromosomes, ])
 
-
-
 ## Saving files
 
 write.table(p300,"./data/H1_Cell_Line/h1_p300.bed", sep="\t", row.names=FALSE, quote = FALSE)
 write.table(dhs,"./data/H1_Cell_Line/h1_dhs.bed", sep="\t", row.names=FALSE, quote = FALSE)
+
+
+## Saving as a final intersection of p300 and DHS sites
+system("intersectBed -a ./data/H1_Cell_Line/h1_p300_merged.bed -b ./data/H1_Cell_Line/h1_dhs_merged.bed > ./data/H1_Cell_Line/h1_p300_dhs_intersect.bed")
+
 
 ## Add class to the data: "enhancer"
 
