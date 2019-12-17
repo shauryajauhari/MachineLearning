@@ -22,6 +22,10 @@ system("sortBed -i ./data/H1_Cell_Line/GSM831036_H1_P300.bed > ./data/H1_Cell_Li
 
 # Working on DHS data #
 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install(c("rtracklayer", "GenomicRanges"))
+
 library(rtracklayer)
 dhs_rev <- import.bed("./data/H1_Cell_Line/GSM878621_H1_DNase_sorted.bed")
 chromosomes <- c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14",
