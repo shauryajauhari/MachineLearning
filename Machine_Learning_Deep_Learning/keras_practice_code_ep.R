@@ -11,7 +11,7 @@ library(keras)
 
 install_keras()
 
-# Turn `iris` into a matrix
+# Turn `enhancer prediction data` into a matrix
 d <- as.matrix(d)
 
 # Set iris `dimnames` to `NULL`
