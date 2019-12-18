@@ -9,7 +9,7 @@ library(keras)
 ## points any necessary dependencies to be installed. Note that the directions are
 ## subjective and may vary from system to system.
 
-install_keras()
+install_keras(method= "conda")
 
 # Turn `enhancer prediction data` into a matrix
 d <- as.matrix(d)
