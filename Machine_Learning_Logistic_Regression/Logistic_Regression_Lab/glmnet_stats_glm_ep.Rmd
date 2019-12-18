@@ -34,8 +34,7 @@ epdata <- readRDS("../../Machine_Learning_Deep_Learning/data/ep_data_sample.rds"
 The class labels 0 and 1 represent "Enhancer" and "Non-Enhancer" categories.
 
 ```{r Cross-validation for finding the optimal lambda.}
-
-set.seed(1)
+set.seed(005)
 cv.modelfit <- cv.glmnet(as.matrix(epdata[,1:4]), 
                          epdata$class, 
                          family = "binomial", 
@@ -52,7 +51,7 @@ cat("There are", length(cv.modelfit$lambda),
     "lambda values in all:",
     cv.modelfit$lambda,
     ", out of which", 
-    cv.modelfit$lambda.min, 
+    min(cv.modelfit$lambda), 
     "is the minimum, while",
     cv.modelfit$lambda.1se,
     "denotes the value at which the model is optimized at one standard error.")
@@ -67,14 +66,14 @@ modelfit <- glmnet(as.matrix(epdata[,1:4]),
                    epdata$class, 
                    family = "binomial", 
                    alpha = 1, 
-                   lambda = cv.modelfit$lambda.min)
+                   lambda = min(cv.modelfit$lambda))
 
 # Listing non-zero coefficients
 
 print(modelfit$beta[,1])
 plot(modelfit)
 ```
-Note that the **features must be presented as a data matrix**, while the **response variable is a factor with two levels**. On calling the *glmnet*, we get information under 3 heads: *Df* signifies the number of non-zero coefficients from left to right, i.e. in this case coefficients for Sepal.Length, Sepal.Width, Petal.Length, Petal.Width; *%Dev* represents deviation; and *Lambda* represents the penalties imposed by the model. They would typically be limited to 100, but could even halt early if insufficient deviation is observed. Also, by default elastic-net (lasso+ridge) is used for regularization task by the glmnet, which could be set to lasso (alpha=1) or ridge (alpha=0).
+Note that the **features must be presented as a data matrix**, while the **response variable is a factor with two levels**. On calling the *glmnet*, we get information under 3 heads: *Df* signifies the number of non-zero coefficients from left to right, i.e. in this case coefficients for reads_h3k27ac, reads_h3k4me3, raeds_h3k4me2, reads_h3k4me1; *%Dev* represents deviation; and *Lambda* represents the penalties imposed by the model. They would typically be limited to 100, but could even halt early if insufficient deviation is observed. Also, by default elastic-net (lasso+ridge) is used for regularization task by the glmnet, which could be set to lasso (alpha=1) or ridge (alpha=0).
 
 
 
@@ -87,11 +86,55 @@ predict(modelfit, type="coef")
 ***
 ## Excercises.
 
-1. Try to fit the model with varying lamba, say *cv.modelfit$lambda.min*.
+1. Try to fit the model with varying lamba, say *cv.modelfit$lambda.1se*.
 2. Try the above for alpha = 0, i.e. ridge penalty.
 3. Try the above for any value between 0 and 1; that's **elastic-net** regularization.
 4. Try the above template for several available datasets at <http://archive.ics.uci.edu/ml/index.php>. 
 
+```{r Excercise 1}
+# Model fit with *cv.modelfit$lambda.1se*.
+set.seed(5)
+modelfit1 <- glmnet(as.matrix(epdata[,1:4]), 
+                   epdata$class, 
+                   family = "binomial", 
+                   alpha = 1, 
+                   lambda = cv.modelfit$lambda.1se)
+
+# Listing non-zero coefficients
+
+print(modelfit1$beta[,1])
+plot(modelfit1)
+
+```
+```{r Excercise 2}
+# Model fit with alpha=0.
+set.seed(3)
+modelfit2 <- glmnet(as.matrix(epdata[,1:4]), 
+                   epdata$class, 
+                   family = "binomial", 
+                   alpha = 0, 
+                   lambda = min(cv.modelfit$lambda))
+
+# Listing non-zero coefficients
+
+print(modelfit2$beta[,1])
+plot(modelfit2)
+```
+```{r Excercise 3}
+# Model fit with alpha=0.5.
+set.seed(05)
+modelfit3 <- glmnet(as.matrix(epdata[,1:4]), 
+                   epdata$class, 
+                   family = "binomial", 
+                   alpha = 0.5, 
+                   lambda = min(cv.modelfit$lambda))
+
+# Listing non-zero coefficients
+
+print(modelfit3$beta[,1])
+plot(modelfit3)
+```
+ 
  
 Now, let's move to stats::glm.
 
@@ -103,7 +146,9 @@ To begin, we shall customarily bifurcate our dataset into training data and test
 
 
 ```{r Partition data into proportions: 80% (Train)  and 20% (Test)}
-set.seed(3) # for results reproducibility.
+set.seed(7) # for results reproducibility.
+
+epdata$class <- as.numeric(as.factor(epdata$class))-1
 part <- sample(2, nrow(epdata), 
                replace = TRUE, 
                prob = c(0.8,0.2))
@@ -117,7 +162,7 @@ cat("So, now we have",
 ```
 
 ```{r Structuring the Logistic Regression Model}
-epmodel <- glm(formula = class ~ peaks_h3k27ac + peaks_h3k4me3 + peaks_h3k4me2 + peaks_h3k4me1, 
+epmodel <- glm(formula = class ~ reads_h3k27ac + reads_h3k4me3 + reads_h3k4me2 + reads_h3k4me1, 
                data = train, 
                family = "binomial")
 summary(epmodel)
@@ -143,6 +188,7 @@ y_train <- predict(epmodel,
 head(y_train)
 head(train)
 ```
+
 These are the estimates of the class variable. To calculate the accuracy of the model we need to compare these to the orginal values of the response variable, 0 for "Enhancer" and 1 for "Non-Enhancer". If you see the first observation, 0.6262084 ~ 62.6 % chance of being a non-enhancer, and in actuality if you look at the original data frame it is a non-enhancer. The probability (62.6 %) can be calculated by fitting values of coefficients in the model. Try doing that.
 
 y = 0.5319361 + (-0.0217276 x peaks_h3k27ac) + (0.0048529 x peaks_h3k4me3) + (0.0200793 x peaks_h3k4me2) + (-0.0006598 x peaks_h3k4me3)
