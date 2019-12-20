@@ -38,6 +38,7 @@ install.packages("xgboost", dependencies = TRUE, verbose = TRUE,
 
 epdata <- readRDS("../Machine_Learning_Deep_Learning/data/ep_data_sample.rds")
 rownames(epdata) <- c()
+epdata$class <- as.numeric(as.factor(epdata$class))-1
 
 
 set.seed(001)
