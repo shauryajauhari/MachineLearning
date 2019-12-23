@@ -27,6 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 install.packages("xgboost", dependencies = TRUE, verbose = TRUE,
                  repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
+library(xgboost)
 ```
 
 ## Dataset
@@ -36,9 +37,9 @@ install.packages("xgboost", dependencies = TRUE, verbose = TRUE,
 
 ```{r data loading}
 
-epdata <- readRDS("../Machine_Learning_Deep_Learning/data/ep_data_sample.rds")
+epdata <- readRDS("../Machine_Learning_Deep_Learning/data/ep_data.rds")
 rownames(epdata) <- c()
-
+epdata$class <- as.numeric(as.factor(epdata$class))-1
 
 set.seed(001)
 data_partition <- sample(3, nrow(epdata), replace = TRUE, prob = c(0.64,0.16,0.2))
@@ -66,9 +67,8 @@ test_labels <- to_categorical(test$class)
 
 ```{r basic implementation}
 
-library(xgboost)
 xgbmodel1 <- xgboost(data = as.matrix(train[,1:4]), 
-                     label = train$class, 
+                     label = train[,5], 
                      max_depth = 2, 
                      eta = 1, 
                      nthread = 2, 
@@ -85,8 +85,8 @@ xgbmodel1 <- xgboost(data = as.matrix(train[,1:4]),
 ```{r xgb.dmatrix conversion and cross validation}
 
 
-train_data <- xgb.DMatrix(data = as.matrix(train[,1:4]), label= train$class) 
-test_data <- xgb.DMatrix(data = as.matrix(test[,1:4]), label= test$class) 
+train_data <- xgb.DMatrix(data = as.matrix(train[,1:4]), label= train[,5]) 
+test_data <- xgb.DMatrix(data = as.matrix(test[,1:4]), label= test[,5]) 
 
 
 xgbcv1 <- xgb.cv( data = train_data,
@@ -94,8 +94,8 @@ xgbcv1 <- xgb.cv( data = train_data,
                  nfold = 5, 
                  showsd = T, 
                  stratified = T, 
-                 print.every.n = 10, 
-                 early.stop.round = 20, 
+                 print_every_n = 10, 
+                 early_stop_round = 20, 
                  maximize = F)
 
 ```
