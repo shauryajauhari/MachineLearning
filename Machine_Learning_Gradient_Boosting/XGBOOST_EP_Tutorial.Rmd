@@ -40,6 +40,10 @@ library(xgboost)
 epdata <- readRDS("../Machine_Learning_Deep_Learning/data/ep_data.rds")
 rownames(epdata) <- c()
 epdata$class <- as.numeric(as.factor(epdata$class))-1
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45913ef0a491878ee008626ee492d5b0c5d08c18
 
 set.seed(001)
 data_partition <- sample(3, nrow(epdata), replace = TRUE, prob = c(0.64,0.16,0.2))

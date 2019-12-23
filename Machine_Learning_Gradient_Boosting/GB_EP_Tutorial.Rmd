@@ -58,7 +58,7 @@ library(gbm)
 
 epdata <- readRDS("../Machine_Learning_Deep_Learning/data/ep_data_sample.rds")
 rownames(epdata) <- c()
-
+epdata$class <- as.numeric(as.factor(epdata$class))-1
 
 set.seed(001)
 data_partition <- sample(3, nrow(epdata), replace = TRUE, prob = c(0.64,0.16,0.2))
@@ -88,7 +88,7 @@ LogLossBinary = function(actual, predicted, eps = 1e-15) {
 
 ```{r model fit}
 
-gbm_model <- gbm(formula = class ~ peaks_h3k27ac + peaks_h3k4me3 + peaks_h3k4me2 + peaks_h3k4me1,
+gbm_model <- gbm(formula = class ~ reads_h3k27ac + reads_h3k4me3 + reads_h3k4me2 + reads_h3k4me1,
                distribution = "bernoulli",
                data = train,
                n.trees = 2500,
@@ -119,6 +119,7 @@ head(data.frame("Actual" = train$class,
                 "Prediction Probability" = gbm_train_pred))
 
 ```
+
 ```{r classifier accuracy}
 
 cat("The accuracy of the classifier is", (LogLossBinary(train$class, gbm_train_pred)*100),"%")
@@ -160,7 +161,7 @@ Let us analyze how the model on test data fares on the holdout data.
 
 # model
 
-gbm_model_test <- gbm(formula = class ~ peaks_h3k27ac + peaks_h3k4me3 + peaks_h3k4me2 + peaks_h3k4me1,
+gbm_model_test <- gbm(formula = class ~ reads_h3k27ac + reads_h3k4me3 + reads_h3k4me2 + reads_h3k4me1,
                distribution = "bernoulli",
                data = test,
                n.trees = 1500,
