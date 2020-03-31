@@ -26,12 +26,17 @@ library(glmnet)
 The dataset derivation has been lengthily described [here](https://nbviewer.jupyter.org/github/shauryajauhari/Machine_Learning/blob/master/Machine_Learning_Deep_Learning/enhancer_prediction_dataset_protocol.ipynb)
 
 ```{r loading the data}
-epdata <- readRDS("../../Machine_Learning_Deep_Learning/data/ep_data_sample.rds")
+epdata <- readRDS("../../Machine_Learning_Deep_Learning/predictionData.rds")
+
+## Subsetting just features and class columns.
+epdata <- epdata[,4:8]
+colnames(epdata)[1:4] <- c("reads_h3k27ac", "reads_h3k4me1", "reads_h3k4me2", "reads_h3k4me3")
+
 ```
 
 > You can always seek help in the R documentation with ?.
 
-The class labels 0 and 1 represent "Enhancer" and "Non-Enhancer" categories.
+The class labels 0 and 1 represent "Enhancer" and "Non-Enhancer" categories, respectively.
 
 ```{r Cross-validation for finding the optimal lambda.}
 set.seed(005)
@@ -145,13 +150,13 @@ The *stats* package is preloaded in R. We are particularly interested in the gen
 To begin, we shall customarily bifurcate our dataset into training data and testing data. The training data shall be used to build our linear model, while the testing data shall be used for its validation. Arbitrary proportions can be considered for splitting the data, however, usually 80-20 partition is reasonable.
 
 
-```{r Partition data into proportions: 80% (Train)  and 20% (Test)}
+```{r Partition data into proportions: 70% (Train)  and 30% (Test)}
 set.seed(7) # for results reproducibility.
 
 epdata$class <- as.numeric(as.factor(epdata$class))-1
 part <- sample(2, nrow(epdata), 
                replace = TRUE, 
-               prob = c(0.8,0.2))
+               prob = c(0.7,0.3))
 train <- epdata[part==1,]
 test <- epdata[part==2,]
 cat("So, now we have", 
@@ -182,21 +187,14 @@ vif(epmodel)
 Neither of the variables have high vif score, so they all qualify for the model.
 
 ```{r Model prediction}
-y_train <- predict(epmodel, 
-                   train, 
-                   type = "response")
+y_train <- predict(epmodel, train, type = "response")
 head(y_train)
 head(train)
 ```
 
-These are the estimates of the class variable. To calculate the accuracy of the model we need to compare these to the orginal values of the response variable, 0 for "Enhancer" and 1 for "Non-Enhancer". If you see the first observation, 0.6262084 ~ 62.6 % chance of being a non-enhancer, and in actuality if you look at the original data frame it is a non-enhancer. The probability (62.6 %) can be calculated by fitting values of coefficients in the model. Try doing that.
+These are the estimates of the class variable. To calculate the accuracy of the model we need to compare these to the orginal values of the response variable, 0 for "Enhancer" and 1 for "Non-Enhancer". If you see the first observation, 0.6305290 ~ 63 % chance of being a non-enhancer, and in actuality if you look at the original data frame it is a non-enhancer. The probability (63 %) can be calculated by fitting values of coefficients in the model. Try doing that.
 
-y = 0.5319361 + (-0.0217276 x peaks_h3k27ac) + (0.0048529 x peaks_h3k4me3) + (0.0200793 x peaks_h3k4me2) + (-0.0006598 x peaks_h3k4me3)
-  = 0.5319361 + (-0.0217276 x 0.734144) + (0.0048529 x 0.00000) + (0.0200793 x 0.00000) + (-0.0006598 x 0.00000)
-  = 0.5319361 + (-0.0159511872) + 0 + 0 + 0
-  = 0.515984913 != 0.6262084 CROSS-CHECK
-  
-There is some discrepancy in resultant probabilities, yet the classification is accurate.
+y =  0.534487 + (-0.041838 x peaks_h3k27ac) + (0.049430 x reads_h3k4me3) + (0.065430 x reads_h3k4me2) + (0.100927 x reads_h3k4me1)
 
 ```{r Misclassification Error}
 
@@ -236,4 +234,4 @@ cat("The confidence level for this model is",
 
 ```
  
-Our model achieved a fairly large p-value and a low confidence level suggesting that the model is unsuitable for current classification task. 
+Is this an ideal model ???
